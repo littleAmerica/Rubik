@@ -30,18 +30,42 @@ void Game::init()
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;	
 		}
+
+		bool m_opengl = true;
+		if (m_opengl)
+		{
+			//Use OpenGL 2.1
+			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+			flags |= SDL_WINDOW_OPENGL;
+		}
+
+
+
 		// if succeeded create our window
 		m_pWindow = SDL_CreateWindow(m_name.c_str(), m_xpos, m_ypos, m_width, m_height, flags);
+
 		// if the window creation succeeded create our renderer
 		if(m_pWindow != 0)
 		{
+			m_context = SDL_GL_CreateContext(m_pWindow);
+			
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, 0);
 			if (m_pRenderer)
 			{
-				SDL_SetRenderDrawColor(m_pRenderer,	255, 255, 255, 255);
+				SDL_SetRenderDrawColor(m_pRenderer,	255, 0, 255, 255);
 				m_bRunning = true;
 			}
 		}
+
+		SDL_Surface* pTempSurface = SDL_LoadBMP("E:/Projects/Rubik/resourse/rider.bmp");
+		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer,	pTempSurface);
+		SDL_FreeSurface(pTempSurface);
+
+		SDL_QueryTexture(m_pTexture, NULL, NULL,
+			&m_sourceRectangle.w, &m_sourceRectangle.h);
 	}
 }
 

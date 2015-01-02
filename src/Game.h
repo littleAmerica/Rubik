@@ -24,6 +24,13 @@ private:
 
 	SDL_Window*		m_pWindow;
 	SDL_Renderer*	m_pRenderer;
+
+	SDL_GLContext	 m_context;
+
+	SDL_Texture*	m_pTexture; // the new SDL_Texture variable
+	SDL_Rect		m_sourceRectangle; // the first rectangle
+	SDL_Rect		m_destinationRectangle; // another rectangle
+
 	bool			m_bRunning;
 
 	std::string		m_name;
