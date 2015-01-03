@@ -5,6 +5,10 @@
 
 #include "ShaderProgram.h"
 
+#include "glm/glm.hpp"
+using glm::mat4;
+using glm::vec3;
+#include <glm/gtc/matrix_transform.hpp>
 
 
 
@@ -21,11 +25,18 @@ int main(int argc, char* args[])
 	game->init();
 
 	glew_init();
-	ShaderProgram shaderProgram(readShader("C:/Users/matan/Documents/GitHub/Rubik/resourse/shaders/simple.vert"), 
-		readShader("C:/Users/matan/Documents/GitHub/Rubik/resourse/shaders/simple.frag"));	
+	ShaderProgram shaderProgram(readShader("../../../resourse/shaders/simple.vert"), 
+		readShader("../../../resourse/shaders/simple.frag"));	
+
+	float angle = 1;
 
 	while(game->running())
 	{
+
+		mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
+
+		shaderProgram.SetMatrix(rotationMatrix, "RotationMatrix");
+
 		/* Make our background black */
 		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);

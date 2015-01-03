@@ -48,6 +48,15 @@ void ShaderProgram::linkProgram()
 	createGLProgram(m_shaderProgram, m_vertextProgram, m_fragmentProgram);
 }
 
+void ShaderProgram::SetMatrix( glm::mat4& matr, const std::string& name )
+{
+	GLuint location =glGetUniformLocation(m_shaderProgram, name.c_str());
+	if( location >= 0 )
+	{
+		glUniformMatrix4fv(location, 1, GL_FALSE, &matr[0][0]);
+	}
+}
+
 void glew_init()
 {
 	GLenum err = glewInit();
@@ -132,7 +141,7 @@ void initVAO(GLuint programHandle, GLuint& vaoHandle)
 {
 
 	static GLuint vboHandles[2];
-	glGenBuffers(2, vboHandles);
+	
 	static GLuint positionBufferHandle = vboHandles[0];
 	static GLuint colorBufferHandle = vboHandles[1];
 
@@ -141,28 +150,21 @@ void initVAO(GLuint programHandle, GLuint& vaoHandle)
 	glBindVertexArray(vaoHandle);
 
 	// Populate the position buffer
+	glGenBuffers(1, &positionBufferHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
 	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), positionData, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
+	glBindAttribLocation(programHandle, 0, "VertexPosition");
+
 	// Populate the color buffer
+	glGenBuffers(1, &colorBufferHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
 	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), colorData,	GL_STATIC_DRAW);
-
-
-	// Enable the vertex attribute arrays
-	glEnableVertexAttribArray(0); // Vertex position
-	glEnableVertexAttribArray(1); // Vertex color
-	// Map index 0 to the position buffer
-	glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );
-	// Map index 1 to the color buffer
-	glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
-	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0,
-		(GLubyte *)NULL );
-
-	// Bind index 0 to the shader input variable "VertexPosition"
-	glBindAttribLocation(programHandle, 0, "VertexPosition");
-	// Bind index 1 to the shader input variable "VertexColor"
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0,(GLubyte *)NULL );
 	glBindAttribLocation(programHandle, 1, "VertexColor");
+	
 
 	glBindFragDataLocation(programHandle, 0, "FragColor");
 }
