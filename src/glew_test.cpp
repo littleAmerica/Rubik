@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include "GL/glew.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -7,7 +7,6 @@
 #include <iostream>
 
 void print_glew_info();
-											  ";
 														  
 void glew_init()
 {

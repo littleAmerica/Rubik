@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\..\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)..\..\..\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\..\..\external\SDL2-2.0.3\include;$(ProjectDir)..\..\..\external\glew-1.11.0\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\external\glew-1.11.0\lib\Release\Win32;$(ProjectDir)..\..\..\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -61,7 +61,8 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d /r  "$(ProjectDir)..\..\..\external\SDL2-2.0.3\lib\x86\*.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d /r  "$(ProjectDir)..\..\..\external\SDL2-2.0.3\lib\x86\*.dll" "$(OutDir)"
+xcopy /y /d /r  "$(ProjectDir)..\..\..\external\glew-1.11.0\bin\Release\Win32\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
