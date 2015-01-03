@@ -6,19 +6,13 @@
 
 #include <iostream>
 
-void print_glew_info();
-														  
-void glew_init()
-{
-	GLenum err = glewInit();
-	if( GLEW_OK != err )
-	{
-		std::cout << "Error initializing GLEW: " << glewGetErrorString(err) << "\n";
-	}
-	print_glew_info();
-}
+void print_glew_info(bool full = false);
 
-void print_glew_info()
+					
+
+
+
+void print_glew_info(bool full)
 {
 	const GLubyte *renderer = glGetString( GL_RENDERER );
 	const GLubyte *vendor = glGetString( GL_VENDOR );
@@ -33,4 +27,11 @@ void print_glew_info()
 	std::cout <<"GL Version (string) : " << version << "\n";
 	std::cout <<"GL Version (integer) : " << major << "." << minor << "\n";
 	std::cout <<"GLSL Version : " << glslVersion << "\n"; 
+
+	if (!full)
+		return;
+	GLint nExtensions;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &nExtensions);
+	for( int i = 0; i < nExtensions; i++ )
+		std::cout << i << " " << glGetStringi( GL_EXTENSIONS, i ) << "\n";
 }

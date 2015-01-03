@@ -24,6 +24,9 @@
     <ClCompile Include="..\..\..\src\glew_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\ShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Game.h">
@@ -32,5 +35,16 @@
     <ClInclude Include="..\..\..\src\glew_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\ShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\resourse\shaders\simple.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\resourse\shaders\simple.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

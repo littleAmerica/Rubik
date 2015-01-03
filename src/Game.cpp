@@ -25,7 +25,7 @@ void Game::init()
 {
 	if(SDL_Init(SDL_INIT_EVERYTHING) >= 0)
 	{
-		int flags = 0;
+		int flags = SDL_WINDOW_SHOWN;
 		if(m_fullscreen)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;	
@@ -35,10 +35,10 @@ void Game::init()
 		if (m_opengl)
 		{
 			//Use OpenGL 2.1
-			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
 			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 			flags |= SDL_WINDOW_OPENGL;
 		}
 
@@ -71,8 +71,9 @@ void Game::init()
 
 void Game::render()
 {
-	SDL_RenderClear(m_pRenderer); // clear the renderer to the draw color
-	SDL_RenderPresent(m_pRenderer); // draw to the screen
+	SDL_GL_SwapWindow(m_pWindow);
+	//SDL_RenderClear(m_pRenderer); // clear the renderer to the draw color
+	//SDL_RenderPresent(m_pRenderer); // draw to the screen
 }
 
 
