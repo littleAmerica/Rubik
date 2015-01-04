@@ -59,7 +59,7 @@ void ShaderProgram::use()
 
 void ShaderProgram::setUniform(const glm::mat4& matr, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniformMatrix4fv(location, 1, GL_FALSE, &matr[0][0]);
@@ -68,7 +68,11 @@ void ShaderProgram::setUniform(const glm::mat4& matr, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::mat3& matr, const std::string& name )
 {
-	throw std::exception("Not implemented");
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
+	if( location >= 0 )
+	{
+		glUniformMatrix3fv(location, 1, GL_FALSE, &matr[0][0]);
+	}
 }
 
 void ShaderProgram::setUniform( const glm::vec2& vec, const std::string& name )
@@ -78,7 +82,7 @@ void ShaderProgram::setUniform( const glm::vec2& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform3f(location, vec[0], vec[1], vec[2]);
@@ -87,7 +91,7 @@ void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec4& vec, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform4f(location, vec[0], vec[1], vec[2], vec[3]);
@@ -187,6 +191,7 @@ bool ShaderProgram::compileShaderFromString( const std::string & source, ShaderP
 			std::cout << "Shader log: " << log << "\n";
 			delete[] log;
 		}
+		return false;
 	} else {
 		// Compile succeeded, attach shader and return true
 		glAttachShader(m_programHandle, shaderHandle);

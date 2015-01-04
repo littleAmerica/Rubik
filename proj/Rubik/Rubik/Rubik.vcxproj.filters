@@ -61,5 +61,11 @@
     <None Include="..\..\..\resourse\shaders\simple.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\..\..\resourse\shaders\diffuse.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\resourse\shaders\diffuse.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

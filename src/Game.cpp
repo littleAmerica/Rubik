@@ -10,6 +10,10 @@ using glm::mat4;
 using glm::vec3;
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "GL/glew.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 Game::Game(const std::string& name, int xpos, int ypos, int height, int width, bool fullscreen):
 m_pWindow(NULL),
 m_pRenderer(NULL),
@@ -39,8 +43,11 @@ void Game::run()
 		handleEvents();
 		
 		update();
+
 		
 		render();
+
+		SDL_Delay(100);
 	}
 
 	clean();
@@ -94,6 +101,9 @@ void Game::init()
 
 void Game::render()
 {
+	glClearColor ( 0.0, 0.0, 1.0, 1.0 );
+	glClear ( GL_COLOR_BUFFER_BIT );
+
 	if (drawable)
 		drawable->render();
 
@@ -103,9 +113,11 @@ void Game::render()
 
 void Game::update()
 {
-	mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
 
-	shaderProgram.setUniform(rotationMatrix, "RotationMatrix");
+	Model = glm::rotate(Model, 0.1f, glm::vec3(0.f, 1.f, 0.f));
+
+	glm::mat4 MVP        = Projection * View * Model;
+	shaderProgram.setUniform(MVP, "MVP");
 }
 
 
@@ -147,15 +159,45 @@ void Game::OnExit()
 }
 
 
+
+
 void Game::InitGLSLProgram()
 {
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.vert"), ShaderProgram::VERTEX);
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.frag"), ShaderProgram::FRAGMENT);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/diffuse.vert"), ShaderProgram::VERTEX);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/diffuse.frag"), ShaderProgram::FRAGMENT);
 	
 	shaderProgram.bindFragDataLocation(0, "FragColor");
+
+//	glClearColor(0.0,0.0,0.0,1.0);
+//	glEnable(GL_DEPTH_TEST);
 
 	drawable.reset(new Torus(0.5f, 0.3f, 30, 30));
 
 	shaderProgram.linkProgram();
 	shaderProgram.use();
+	//glm::mat4 model = glm::mat4(1.0f);
+	//model *= glm::rotate(-35.0f, glm::vec3(1.0f,0.0f,0.0f));
+	//model *= glm::rotate(35.0f, glm::vec3(0.0f,1.0f,0.0f));
+	//
+	//glm::mat4 view = glm::lookAt(glm::vec3(0.0f,0.0f,2.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f));
+	//
+	//glm::mat4 projection = mat4(1.0f);
+
+	//shaderProgram.setUniform(glm::vec3(0.9f, 0.5f, 0.3f), "Kd");
+	//shaderProgram.setUniform(glm::vec3(1.0f, 1.0f, 1.0f), "Ld");
+	
+
+	//glm::mat4 mv = view * model;
+	//shaderProgram.setUniform(mv, "ModelViewMatrix");
+	//shaderProgram.setUniform(glm::mat3(vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2]) ), "NormalMatrix");
+	//shaderProgram.setUniform(projection * mv, "MVP");
+
+	Projection = glm::perspective(45.f, 4.0f / 3.0f, 0.1f, 100.0f);
+
+	View       = glm::lookAt(glm::vec3(0,0,3), glm::vec3(0,0,0), glm::vec3(0,1,0));
+
+	Model      = glm::mat4(1.0f);
+
+	shaderProgram.setUniform(glm::vec4(5.0f,5.0f,2.0f,1.0f), "LightPosition" );
+	shaderProgram.setUniform(glm::vec4(4.f,-3.f,3.f,1.f), "CameraPosition");
 }
