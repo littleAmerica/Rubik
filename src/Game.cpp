@@ -3,6 +3,7 @@
 
 #include "ShaderProgram.h"
 #include "Triangle.h"
+#include "Torus.h"
 
 #include "glm/glm.hpp"
 using glm::mat4;
@@ -153,7 +154,7 @@ void Game::InitGLSLProgram()
 	
 	shaderProgram.bindFragDataLocation(0, "FragColor");
 
-	drawable.reset(new Triangle());
+	drawable.reset(new Torus(0.5f, 0.3f, 30, 30));
 
 	shaderProgram.linkProgram();
 	shaderProgram.use();
