@@ -88,11 +88,14 @@ xcopy /y /d /r  "$(ProjectDir)..\..\..\\resourse\shaders\*" "$(OutDir)"</Command
     <ClCompile Include="..\..\..\src\Game.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\ShaderProgram.cpp" />
+    <ClCompile Include="..\..\..\src\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\Drawable.h" />
     <ClInclude Include="..\..\..\src\Event.h" />
     <ClInclude Include="..\..\..\src\Game.h" />
     <ClInclude Include="..\..\..\src\ShaderProgram.h" />
+    <ClInclude Include="..\..\..\src\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\resourse\shaders\simple.frag" />

@@ -2,6 +2,11 @@
 #include <fstream>
 #include <streambuf>
 
+#include "GL/glew.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+
 #include "ShaderProgram.h"
 
 
@@ -24,8 +29,6 @@ GLuint ShaderProgram::getShaderProgram()
 
 void ShaderProgram::linkProgram()
 {
-	initVAO(m_programHandle, m_vaoHandle);
-
 	glLinkProgram(m_programHandle);
 
 	GLint status;
@@ -65,37 +68,45 @@ void ShaderProgram::setUniform(const glm::mat4& matr, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::mat3& matr, const std::string& name )
 {
-
+	throw std::exception("Not implemented");
 }
 
 void ShaderProgram::setUniform( const glm::vec2& vec, const std::string& name )
 {
-
+	throw std::exception("Not implemented");
 }
 
 void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 {
-
+	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	if( location >= 0 )
+	{
+		glUniform3f(location, vec[0], vec[1], vec[2]);
+	}
 }
 
 void ShaderProgram::setUniform( const glm::vec4& vec, const std::string& name )
 {
-
+	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	if( location >= 0 )
+	{
+		glUniform4f(location, vec[0], vec[1], vec[2], vec[3]);
+	}
 }
 
 void ShaderProgram::setUniform( float matr, const std::string& name )
 {
-
+	throw std::exception("Not implemented");
 }
 
 void ShaderProgram::setUniform( int matr, const std::string& name )
 {
-
+	throw std::exception("Not implemented");
 }
 
 void ShaderProgram::setUniform( bool matr, const std::string& name )
 {
-
+	throw std::exception("Not implemented");
 }
 
 

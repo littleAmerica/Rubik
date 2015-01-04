@@ -1,8 +1,4 @@
 #pragma once
-#include "GL/glew.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
-
 #include <glm/glm.hpp>
 
 class ShaderProgram
@@ -22,8 +18,8 @@ public:
 	void use();
 
 	//these two function should only be called before linking the program
-	void bindAttribLocation( GLuint location, const char * name);
-	void bindFragDataLocation( GLuint location, const char * name );
+	void bindAttribLocation( unsigned int location, const char * name);
+	void bindFragDataLocation( unsigned int location, const char * name );
 
 	void setUniform(const glm::mat4& matr, const std::string& name);
 	void setUniform(const glm::mat3& matr, const std::string& name);
@@ -44,8 +40,5 @@ private:
 	std::string m_fragment;
 	std::string m_vertex;
 };
-
-void initVAO(unsigned int programHandle, unsigned int& vaoHandle);
-
 
 void glew_init();

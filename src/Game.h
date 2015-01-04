@@ -6,6 +6,7 @@
 
 #include "Event.h"
 #include "ShaderProgram.h"
+#include "drawable.h"
 
 
 
@@ -51,5 +52,7 @@ private:
 	int				m_width;
 	int				m_height;
 	bool			m_fullscreen;
+
+	Drawable* drawable;
 };
 
