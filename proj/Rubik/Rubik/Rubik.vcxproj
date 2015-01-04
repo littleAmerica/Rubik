@@ -86,14 +86,12 @@ xcopy /y /d /r  "$(ProjectDir)..\..\..\\resourse\shaders\*" "$(OutDir)"</Command
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Event.cpp" />
     <ClCompile Include="..\..\..\src\Game.cpp" />
-    <ClCompile Include="..\..\..\src\glew_test.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Event.h" />
     <ClInclude Include="..\..\..\src\Game.h" />
-    <ClInclude Include="..\..\..\src\glew_test.h" />
     <ClInclude Include="..\..\..\src\ShaderProgram.h" />
   </ItemGroup>
   <ItemGroup>

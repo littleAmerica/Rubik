@@ -30,7 +30,7 @@ private:
 
 	virtual void OnEvent(SDL_Event* event);
 	virtual void OnExit();
-
+	void InitGLSLProgram();
 
 	SDL_Window*		m_pWindow;
 	SDL_Renderer*	m_pRenderer;

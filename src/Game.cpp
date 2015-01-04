@@ -85,10 +85,7 @@ void Game::init()
 		}
 
 		glew_init();
-
-		shaderProgram.setShaders(ShaderProgram::readShader("simple.vert"), ShaderProgram::readShader("simple.frag"));
-		
-		shaderProgram.linkProgram();
+		InitGLSLProgram();
 	}
 }
 
@@ -98,7 +95,7 @@ void Game::render()
 	glClearColor(0.8, 0.8, 0.8, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	shaderProgram.draw();
+	glDrawArrays(GL_TRIANGLES, 0, 3 );
 
 	SDL_GL_SwapWindow(m_pWindow);
 }
@@ -108,7 +105,7 @@ void Game::update()
 {
 	mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
 
-	shaderProgram.SetMatrix(rotationMatrix, "RotationMatrix");
+	shaderProgram.setUniform(rotationMatrix, "RotationMatrix");
 
 }
 
@@ -149,3 +146,62 @@ void Game::OnExit()
 }
 
 
+static float positionData[] = {
+	-0.8f, -0.8f, 0.0f,
+	0.8f, -0.8f, 0.0f,
+	0.0f, 0.8f, 0.0f, };
+
+static float colorData[] = {
+	0.0f, 0.0f, 1.0f,
+	0.0f, 1.0f, 0.0f, 
+	0.1f, 0.0f, 0.0f};
+
+
+void Game::InitGLSLProgram()
+{
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.vert"), ShaderProgram::VERTEX);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.frag"), ShaderProgram::FRAGMENT);
+	
+	static GLuint vaoHandle = 0;
+	static GLuint positionBufferHandle = 0;
+	static GLuint colorBufferHandle = 0;
+
+	static GLuint programHandle = shaderProgram.getShaderProgram();
+
+	// Create and set-up the vertex array object
+	glGenVertexArrays( 1, &vaoHandle );
+	glBindVertexArray(vaoHandle);
+
+	// Populate the position buffer
+	glGenBuffers(1, &positionBufferHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, positionBufferHandle);
+	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), positionData, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte *)NULL );	
+	shaderProgram.bindAttribLocation(0, "VertexPosition");
+
+	// Populate the color buffer
+	glGenBuffers(1, &colorBufferHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBufferHandle);
+	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), colorData,	GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0,(GLubyte *)NULL );
+	shaderProgram.bindAttribLocation(1, "VertexColor");
+
+	
+	shaderProgram.bindFragDataLocation(0, "FragColor");
+
+
+//	glBindVertexArray(vaoHandle);
+
+	shaderProgram.linkProgram();
+	shaderProgram.use();
+}
+
+void initVAO(GLuint programHandle, GLuint& vaoHandle)
+{
+
+	static GLuint vboHandles[2];
+
+
+}
