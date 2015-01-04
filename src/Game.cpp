@@ -1,6 +1,13 @@
 #include "Game.h"
 #include <iostream>
 
+#include "ShaderProgram.h"
+
+#include "glm/glm.hpp"
+using glm::mat4;
+using glm::vec3;
+#include <glm/gtc/matrix_transform.hpp>
+
 Game::Game(const std::string& name, int xpos, int ypos, int height, int width, bool fullscreen):
 m_pWindow(NULL),
 m_pRenderer(NULL),
@@ -18,6 +25,23 @@ m_bRunning(false)
 
 Game::~Game(void)
 {
+}
+
+
+void Game::run()
+{
+	init();
+
+	while(running())
+	{
+		handleEvents();
+		
+		update();
+		
+		render();
+	}
+
+	clean();
 }
 
 
@@ -60,43 +84,44 @@ void Game::init()
 			}
 		}
 
-		SDL_Surface* pTempSurface = SDL_LoadBMP("E:/Projects/Rubik/resourse/rider.bmp");
-		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer,	pTempSurface);
-		SDL_FreeSurface(pTempSurface);
+		glew_init();
 
-		SDL_QueryTexture(m_pTexture, NULL, NULL,
-			&m_sourceRectangle.w, &m_sourceRectangle.h);
+		shaderProgram.setShaders(ShaderProgram::readShader("simple.vert"), ShaderProgram::readShader("simple.frag"));
+		
+		shaderProgram.linkProgram();
 	}
 }
 
+
 void Game::render()
 {
+	glClearColor(0.8, 0.8, 0.8, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	shaderProgram.draw();
+
 	SDL_GL_SwapWindow(m_pWindow);
-	//SDL_RenderClear(m_pRenderer); // clear the renderer to the draw color
-	//SDL_RenderPresent(m_pRenderer); // draw to the screen
 }
 
 
 void Game::update()
 {
+	mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
+
+	shaderProgram.SetMatrix(rotationMatrix, "RotationMatrix");
 
 }
+
 
 void Game::handleEvents()
 {
 	SDL_Event event;
 	if(SDL_PollEvent(&event))
 	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			m_bRunning = false;
-			break;
-		default:
-			break;
-		}
+		OnEvent(&event);
 	}
 }
+
 
 void Game::clean()
 {
@@ -105,7 +130,22 @@ void Game::clean()
 	SDL_Quit();
 }
 
+
 bool Game::running() 
 { 
 	return m_bRunning; 
 }
+
+
+void Game::OnEvent( SDL_Event* event )
+{
+	Event::OnEvent(event);
+}
+
+
+void Game::OnExit()
+{
+	m_bRunning = false;
+}
+
+

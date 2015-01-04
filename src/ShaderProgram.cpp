@@ -12,41 +12,64 @@ static float colorData[] = {
 	0.0f, 1.0f, 0.0f, 
 	0.1f, 0.0f, 0.0f};
 
-static GLuint createShaderProgram(GLenum type);
+static GLuint createShader(GLenum type);
+static GLuint createShaderProgram();
 static void compileShader(GLuint shader, const std::string& shader_code);
-static void createGLProgram(GLuint programHandle, GLuint vertex, GLuint fragment);
+static void ComposeShaderProgram(GLuint programHandle, GLuint vertex, GLuint fragment);
 static void initVAO(GLuint programHandle, GLuint& vaoHandle);
 
 
-ShaderProgram::ShaderProgram(const std::string& vertex, const std::string& fragment)
-{
-	m_vertextProgram = createShaderProgram(GL_VERTEX_SHADER);
-	m_fragmentProgram = createShaderProgram(GL_FRAGMENT_SHADER);
-	compileShader(m_vertextProgram, vertex);
-	compileShader(m_fragmentProgram, fragment);
-
-	m_shaderProgram = glCreateProgram();
-	if( 0 == m_shaderProgram )
-	{
-		std::cout << "Error creating program object.\n";
-	}
+ShaderProgram::ShaderProgram(const std::string& vertex, const std::string& fragment):
+	m_shaderProgram(0),
+	m_vertextProgram(0),
+	m_fragmentProgram(0),
+	m_vaoHandle(0),
+	m_vertex(vertex),
+	m_fragment(fragment)
+{	
 	initVAO(m_shaderProgram, m_vaoHandle);
-
-	linkProgram();
-	glUseProgram(m_shaderProgram);
-
-	glBindVertexArray(m_vaoHandle);
 }
+
+void ShaderProgram::GeneratePrograms()
+{
+	m_shaderProgram = createShaderProgram();
+	m_vertextProgram = createShader(GL_VERTEX_SHADER);
+	m_fragmentProgram = createShader(GL_FRAGMENT_SHADER);
+}
+
+
+ShaderProgram::ShaderProgram():
+	m_shaderProgram(0),
+	m_vertextProgram(0),
+	m_fragmentProgram(0),
+	m_vaoHandle(0),
+	m_vertex(),
+	m_fragment()
+{
+}
+
 
 GLuint ShaderProgram::getShaderProgram()
 {
 	return m_shaderProgram;
 }
 
+
 void ShaderProgram::linkProgram()
 {
-	createGLProgram(m_shaderProgram, m_vertextProgram, m_fragmentProgram);
+	GeneratePrograms();
+
+	initVAO(m_shaderProgram, m_vaoHandle);
+	compileShader(m_vertextProgram, m_vertex);
+	compileShader(m_fragmentProgram, m_fragment);
+
+	ComposeShaderProgram(m_shaderProgram, m_vertextProgram, m_fragmentProgram);
+
+	glUseProgram(m_shaderProgram);
+
+	glBindVertexArray(m_vaoHandle);
 }
+
 
 void ShaderProgram::SetMatrix( glm::mat4& matr, const std::string& name )
 {
@@ -57,6 +80,7 @@ void ShaderProgram::SetMatrix( glm::mat4& matr, const std::string& name )
 	}
 }
 
+
 void glew_init()
 {
 	GLenum err = glewInit();
@@ -66,7 +90,8 @@ void glew_init()
 	}
 }
 
-GLuint createShaderProgram(GLenum type)
+
+GLuint createShader(GLenum type)
 {
 	GLuint vertShader = glCreateShader( type );
 	if( 0 == vertShader )
@@ -76,6 +101,19 @@ GLuint createShaderProgram(GLenum type)
 	}
 	return vertShader;
 }
+
+
+GLuint createShaderProgram()
+{
+	GLuint shaderProgram = glCreateProgram();
+	if( 0 == shaderProgram )
+	{
+		std::cout << "Error creating program object.\n";
+		return 0;
+	}
+	return shaderProgram;
+}
+
 
 void compileShader(GLuint shader, const std::string& shader_code)
 {
@@ -101,7 +139,8 @@ void compileShader(GLuint shader, const std::string& shader_code)
 	}
 }
 
-void createGLProgram(GLuint programHandle, GLuint vertex, GLuint fragment)
+
+void ComposeShaderProgram(GLuint programHandle, GLuint vertex, GLuint fragment)
 {
 
 	glAttachShader(programHandle, vertex);
@@ -128,7 +167,8 @@ void createGLProgram(GLuint programHandle, GLuint vertex, GLuint fragment)
 	}
 }
 
-std::string readShader(const std::string& path)
+
+std::string ShaderProgram::readShader(const std::string& path)
 {
 	std::ifstream t(path);
 	std::string str((std::istreambuf_iterator<char>(t)),
@@ -136,6 +176,18 @@ std::string readShader(const std::string& path)
 
 	return str;
 }
+
+void ShaderProgram::setShaders( const std::string& vertex, const std::string& fragment )
+{
+	m_vertex = vertex;
+	m_fragment = fragment;
+}
+
+void ShaderProgram::draw()
+{
+	glDrawArrays(GL_TRIANGLES, 0, 3 );
+}
+
 
 void initVAO(GLuint programHandle, GLuint& vaoHandle)
 {

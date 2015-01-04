@@ -1,16 +1,24 @@
 #pragma once
 
-#include "string"
+#include <string>
 
 #include "SDL.h"
 
+#include "Event.h"
+#include "ShaderProgram.h"
 
 
-class Game
+
+class Game : private Event
 {
 public:
 	Game(const std::string& name, int xpos, int ypos, int height, int width, bool fullscreen);
 	~Game(void);
+
+	void run();
+
+
+private:
 
 	//Game routine
 	void init();
@@ -20,7 +28,9 @@ public:
 	void clean();
 	bool running();
 
-private:
+	virtual void OnEvent(SDL_Event* event);
+	virtual void OnExit();
+
 
 	SDL_Window*		m_pWindow;
 	SDL_Renderer*	m_pRenderer;
@@ -30,6 +40,8 @@ private:
 	SDL_Texture*	m_pTexture; // the new SDL_Texture variable
 	SDL_Rect		m_sourceRectangle; // the first rectangle
 	SDL_Rect		m_destinationRectangle; // another rectangle
+
+	ShaderProgram	shaderProgram;
 
 	bool			m_bRunning;
 

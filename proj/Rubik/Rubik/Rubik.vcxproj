@@ -62,7 +62,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d /r  "$(ProjectDir)..\..\..\external\SDL2-2.0.3\lib\x86\*.dll" "$(OutDir)"
-xcopy /y /d /r  "$(ProjectDir)..\..\..\external\glew-1.11.0\bin\Release\Win32\*.dll" "$(OutDir)"</Command>
+xcopy /y /d /r  "$(ProjectDir)..\..\..\external\glew-1.11.0\bin\Release\Win32\*.dll" "$(OutDir)"
+xcopy /y /d /r  "$(ProjectDir)..\..\..\\resourse\shaders\*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,12 +84,14 @@ xcopy /y /d /r  "$(ProjectDir)..\..\..\external\glew-1.11.0\bin\Release\Win32\*.
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\Event.cpp" />
     <ClCompile Include="..\..\..\src\Game.cpp" />
     <ClCompile Include="..\..\..\src\glew_test.cpp" />
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\Event.h" />
     <ClInclude Include="..\..\..\src\Game.h" />
     <ClInclude Include="..\..\..\src\glew_test.h" />
     <ClInclude Include="..\..\..\src\ShaderProgram.h" />
