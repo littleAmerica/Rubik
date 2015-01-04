@@ -20,7 +20,7 @@ m_height(height),
 m_fullscreen(fullscreen),
 m_bRunning(false)
 {
-	std::cout << "Game::Game\n";
+	
 }
 
 
@@ -93,7 +93,8 @@ void Game::init()
 
 void Game::render()
 {
-	drawable->render();
+	if (drawable)
+		drawable->render();
 
 	SDL_GL_SwapWindow(m_pWindow);
 }
@@ -119,7 +120,7 @@ void Game::handleEvents()
 
 void Game::clean()
 {
-	delete drawable;
+	drawable.reset();
 
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
@@ -152,7 +153,7 @@ void Game::InitGLSLProgram()
 	
 	shaderProgram.bindFragDataLocation(0, "FragColor");
 
-	drawable = new Triangle();
+	drawable.reset(new Triangle());
 
 	shaderProgram.linkProgram();
 	shaderProgram.use();

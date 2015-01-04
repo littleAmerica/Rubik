@@ -7,6 +7,7 @@
 #include "Event.h"
 #include "ShaderProgram.h"
 #include "drawable.h"
+#include <memory>
 
 
 
@@ -38,9 +39,9 @@ private:
 
 	SDL_GLContext	 m_context;
 
-	SDL_Texture*	m_pTexture; // the new SDL_Texture variable
-	SDL_Rect		m_sourceRectangle; // the first rectangle
-	SDL_Rect		m_destinationRectangle; // another rectangle
+	//SDL_Texture*	m_pTexture; // the new SDL_Texture variable
+	//SDL_Rect		m_sourceRectangle; // the first rectangle
+	//SDL_Rect		m_destinationRectangle; // another rectangle
 
 	ShaderProgram	shaderProgram;
 
@@ -53,6 +54,6 @@ private:
 	int				m_height;
 	bool			m_fullscreen;
 
-	Drawable* drawable;
+	std::shared_ptr<Drawable> drawable;
 };
 
