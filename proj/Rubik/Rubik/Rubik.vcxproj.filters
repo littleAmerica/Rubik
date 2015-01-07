@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\RenderObjects">
+      <UniqueIdentifier>{bd3c1c84-79b3-439e-bc1a-c53207fd69b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderObjects">
+      <UniqueIdentifier>{c7eb6913-579c-4e7c-8ccf-390028e69fd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Game.cpp">
@@ -28,7 +34,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Triangle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Torus.cpp">
+      <Filter>Source Files\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Cube.cpp">
+      <Filter>Source Files\RenderObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,11 +53,17 @@
     <ClInclude Include="..\..\..\src\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Drawable.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Triangle.h">
+      <Filter>Header Files\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Torus.h">
+      <Filter>Header Files\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Cube.h">
+      <Filter>Header Files\RenderObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

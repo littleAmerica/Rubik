@@ -3,11 +3,9 @@
 
 #include "ShaderProgram.h"
 #include "Triangle.h"
+#include "Torus.h"
+#include "Cube.h"
 
-#include "glm/glm.hpp"
-using glm::mat4;
-using glm::vec3;
-#include <glm/gtc/matrix_transform.hpp>
 
 Game::Game(const std::string& name, int xpos, int ypos, int height, int width, bool fullscreen):
 m_pWindow(NULL),
@@ -100,11 +98,43 @@ void Game::render()
 }
 
 
+void Game::InitGLSLProgram()
+{
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.vert"), ShaderProgram::VERTEX);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.frag"), ShaderProgram::FRAGMENT);
+
+	shaderProgram.bindFragDataLocation(0, "FragColor");
+
+	shaderProgram.use();
+
+	//drawable.reset(new Cube());
+	drawable.reset(new Torus(0.7f, 0.3f, 30, 30));
+
+	shaderProgram.linkProgram();
+	shaderProgram.use();
+
+	//m_view = glm::lookAt(glm::vec3(100.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.0f));
+	//m_model = mat4(0.01f);
+	//m_projection = glm::perspective(45.f, 1.f, 0.01f, 1000.f); 
+
+
+	shaderProgram.printActiveAttribs();
+	shaderProgram.printActiveUniforms();
+}
+
+
 void Game::update()
 {
-	//mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
+	shaderProgram.use();
+	shaderProgram.setUniform(m_view, "ViewMatrix");
+	shaderProgram.setUniform(m_model, "ModelMatrix");
+	shaderProgram.setUniform(m_projection, "ProjectionMatrix");
 
-	//shaderProgram.setUniform(rotationMatrix, "RotationMatrix");
+	glm::mat4 MVP = m_model * m_view * m_projection;
+
+	glm::mat4 rotate = glm::rotate(3.f, glm::vec3(1.f, 0.f, 0.f));
+
+	shaderProgram.setUniform(rotate, "MVP");
 }
 
 
@@ -146,15 +176,3 @@ void Game::OnExit()
 }
 
 
-void Game::InitGLSLProgram()
-{
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.vert"), ShaderProgram::VERTEX);
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.frag"), ShaderProgram::FRAGMENT);
-	
-	shaderProgram.bindFragDataLocation(0, "FragColor");
-
-	drawable.reset(new Triangle());
-
-	shaderProgram.linkProgram();
-	shaderProgram.use();
-}

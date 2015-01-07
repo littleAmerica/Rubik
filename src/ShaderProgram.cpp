@@ -59,7 +59,7 @@ void ShaderProgram::use()
 
 void ShaderProgram::setUniform(const glm::mat4& matr, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location = glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniformMatrix4fv(location, 1, GL_FALSE, &matr[0][0]);
@@ -78,7 +78,7 @@ void ShaderProgram::setUniform( const glm::vec2& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform3f(location, vec[0], vec[1], vec[2]);
@@ -87,7 +87,7 @@ void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec4& vec, const std::string& name )
 {
-	GLuint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform4f(location, vec[0], vec[1], vec[2], vec[3]);
@@ -193,4 +193,51 @@ bool ShaderProgram::compileShaderFromString( const std::string & source, ShaderP
 		glAttachShader(m_programHandle, shaderHandle);
 		return true;
 	}
+}
+
+
+void ShaderProgram::printActiveUniforms() 
+{
+	std::cout << "Uniforms\n";
+	GLint nUniforms, size, location, maxLen;
+	GLsizei written;
+	GLenum type;
+
+	glGetProgramiv( m_programHandle, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLen);
+	glGetProgramiv( m_programHandle, GL_ACTIVE_UNIFORMS, &nUniforms);
+
+	GLchar * name = new GLchar[maxLen];
+
+	printf(" Location | Name\n");
+	printf("------------------------------------------------\n");
+	for( int i = 0; i < nUniforms; ++i ) {
+		glGetActiveUniform( m_programHandle, i, maxLen, &written, &size, &type, name );
+		location = glGetUniformLocation(m_programHandle, name);
+		printf(" %-8d | %s\n",location, name);
+	}
+
+	delete[] name;
+}
+
+
+void ShaderProgram::printActiveAttribs() 
+{
+	std::cout << "Attribs\n";
+	GLint written, size, location, maxLength, nAttribs;
+	GLenum type;
+
+	glGetProgramiv(m_programHandle, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxLength);
+	glGetProgramiv(m_programHandle, GL_ACTIVE_ATTRIBUTES, &nAttribs);
+
+	GLchar * name = new GLchar[maxLength];
+
+	printf(" Index | Name\n");
+	printf("------------------------------------------------\n");
+	for( int i = 0; i < nAttribs; i++ ) {
+		glGetActiveAttrib( m_programHandle, i, maxLength, &written, &size, &type, name );
+		location = glGetAttribLocation(m_programHandle, name);
+		printf(" %-5d | %s\n",location, name);
+	}
+
+	delete[] name;
 }

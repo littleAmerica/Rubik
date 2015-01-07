@@ -9,6 +9,11 @@
 #include "drawable.h"
 #include <memory>
 
+#include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform2.hpp>
+using glm::vec4;
+using glm::mat4;
 
 
 class Game : private Event
@@ -55,5 +60,10 @@ private:
 	bool			m_fullscreen;
 
 	std::shared_ptr<Drawable> drawable;
+
+	mat4 m_model;
+	mat4 m_view;
+	mat4 m_projection;
+
 };
 

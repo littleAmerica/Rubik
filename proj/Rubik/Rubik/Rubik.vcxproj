@@ -160,6 +160,8 @@ xcopy /y /d /r  "$(ProjectDir)..\..\..\\resourse\shaders\*" "$(OutDir)"</Command
     <ClCompile Include="..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\src\ShaderProgram.cpp" />
     <ClCompile Include="..\..\..\src\Triangle.cpp" />
+    <ClCompile Include="..\..\..\src\Torus.cpp" />
+    <ClCompile Include="..\..\..\src\Cube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Drawable.h" />
@@ -167,6 +169,8 @@ xcopy /y /d /r  "$(ProjectDir)..\..\..\\resourse\shaders\*" "$(OutDir)"</Command
     <ClInclude Include="..\..\..\src\Game.h" />
     <ClInclude Include="..\..\..\src\ShaderProgram.h" />
     <ClInclude Include="..\..\..\src\Triangle.h" />
+    <ClInclude Include="..\..\..\src\Torus.h" />
+    <ClInclude Include="..\..\..\src\Cube.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\resourse\shaders\simple.frag" />
