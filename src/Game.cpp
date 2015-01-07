@@ -214,3 +214,8 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 
 	m_view *= moveMatrix;
 }
+
+void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
+{
+	std::cout << relX << " " << relY << "\n";
+}

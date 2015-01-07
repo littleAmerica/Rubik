@@ -39,9 +39,10 @@ private:
 	virtual void OnEvent(SDL_Event* event);
 	void OnKeyDown(SDL_Keycode sym, Uint16 mod);
 	virtual void OnExit();
+	void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
 	void InitGLSLProgram();
-	
+
 	SDL_Window*		m_pWindow;
 	SDL_Renderer*	m_pRenderer;
 

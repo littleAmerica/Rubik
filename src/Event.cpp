@@ -43,10 +43,13 @@ void Event::OnEvent(SDL_Event* event) {
 	//	break;
 	//				}
 
-	//case SDL_MOUSEMOTION: {
-	//	OnMouseMove(Event->motion.x,Event->motion.y,Event->motion.xrel,Event->motion.yrel,(Event->motion.state&SDL_BUTTON(SDL_BUTTON_LEFT))!=0,(Event->motion.state&SDL_BUTTON(SDL_BUTTON_RIGHT))!=0,(Event->motion.state&SDL_BUTTON(SDL_BUTTON_MIDDLE))!=0);
-	//	break;
-	//					  }
+	case SDL_MOUSEMOTION: {
+		OnMouseMove(event->motion.x, event->motion.y, event->motion.xrel, event->motion.yrel, 
+			(event->motion.state& SDL_BUTTON(SDL_BUTTON_LEFT)) !=0,
+			(event->motion.state&SDL_BUTTON(SDL_BUTTON_RIGHT))!=0,
+			(event->motion.state&SDL_BUTTON(SDL_BUTTON_MIDDLE)) !=0);
+		break;
+						  }
 
 	//case SDL_MOUSEBUTTONDOWN: {
 	//	switch(Event->button.button) {
@@ -159,7 +162,8 @@ void Event::OnMouseBlur() {
 	//Pure virtual, do nothing
 }
 
-void Event::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle) {
+void Event::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle) 
+{
 	//Pure virtual, do nothing
 }
 
