@@ -102,9 +102,9 @@ void Game::render()
 
 void Game::update()
 {
-	mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
+	//mat4 rotationMatrix = glm::rotate(mat4(1.0f), 30.f, vec3(0.0f,0.0f,1.0f));
 
-	shaderProgram.setUniform(rotationMatrix, "RotationMatrix");
+	//shaderProgram.setUniform(rotationMatrix, "RotationMatrix");
 }
 
 
@@ -148,8 +148,8 @@ void Game::OnExit()
 
 void Game::InitGLSLProgram()
 {
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.vert"), ShaderProgram::VERTEX);
-	shaderProgram.compileShaderFromString(ShaderProgram::readShader("simple.frag"), ShaderProgram::FRAGMENT);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.vert"), ShaderProgram::VERTEX);
+	shaderProgram.compileShaderFromString(ShaderProgram::readShader("../../../resourse/shaders/simple.frag"), ShaderProgram::FRAGMENT);
 	
 	shaderProgram.bindFragDataLocation(0, "FragColor");
 

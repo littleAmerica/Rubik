@@ -7,8 +7,8 @@
 
 int main(int argc, char* args[])
 {
-	AllocConsole(); 
-	freopen("CON","w", stdout);
+	//AllocConsole(); 
+	//freopen("CON","w", stdout);
 
 	Game* game = new Game("Chapter 1: Setting up SDL", 200, 200, 
 		320, 480, false);
