@@ -43,8 +43,7 @@ void Game::run()
 		handleEvents();
 		
 		update();
-
-		
+	
 		render();
 
 		SDL_Delay(100);
@@ -200,4 +199,10 @@ void Game::InitGLSLProgram()
 
 	shaderProgram.setUniform(glm::vec4(5.0f,5.0f,2.0f,1.0f), "LightPosition" );
 	shaderProgram.setUniform(glm::vec4(4.f,-3.f,3.f,1.f), "CameraPosition");
+}
+
+
+void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod) 
+{
+	//if(sym.)
 }

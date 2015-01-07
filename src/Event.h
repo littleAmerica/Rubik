@@ -14,7 +14,7 @@ public:
 
 	virtual void OnInputBlur();
 
-	virtual void OnKeyDown(SDL_Keycode sym, SDL_Keymod  mod, Uint16 unicode);
+	virtual void OnKeyDown(SDL_Keycode sym, Uint16 mod);
 
 	virtual void OnKeyUp(SDL_Keycode sym, SDL_Keymod  mod, Uint16 unicode);
 

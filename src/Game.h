@@ -34,6 +34,7 @@ private:
 	bool running();
 
 	virtual void OnEvent(SDL_Event* event);
+	virtual void OnKeyDown(SDL_Keycode sym, Uint16 mod);
 	virtual void OnExit();
 	void InitGLSLProgram();
 
