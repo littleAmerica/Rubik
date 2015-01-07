@@ -5,7 +5,7 @@ class Triangle: public Drawable
 public:
 	Triangle();
 
-	virtual void render() const;
+	virtual void render();
 
 	virtual ~Triangle();
 

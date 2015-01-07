@@ -11,7 +11,7 @@ int main(int argc, char* args[])
 	//freopen("CON","w", stdout);
 
 	Game* game = new Game("Chapter 1: Setting up SDL", 200, 200, 
-		320, 480, false);
+		600, 600, false);
 
 	game->run();
 

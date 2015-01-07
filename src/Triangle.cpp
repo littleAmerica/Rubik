@@ -44,7 +44,7 @@ Triangle::Triangle()
 }
 
 
-void Triangle::render() const
+void Triangle::render()
 {
 	glBindVertexArray(vaoHandle);
 	glClearColor(0.8, 0.8, 0.8, 1.0);

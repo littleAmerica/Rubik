@@ -31,6 +31,8 @@ public:
 	void setUniform(bool matr, const std::string& name);
 
 	static std::string readShader(const std::string& path);
+	void printActiveAttribs();
+	void printActiveUniforms();
 private:
 	unsigned int m_vaoHandle;
 	unsigned int m_programHandle;
