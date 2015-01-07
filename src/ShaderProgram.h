@@ -16,6 +16,7 @@ public:
 	
 	bool compileShaderFromString( const std::string & source, ShaderProgram::GLSLShaderType type );
 	void use();
+	void release();
 
 	//these two function should only be called before linking the program
 	void bindAttribLocation( unsigned int location, const char * name);
@@ -44,3 +45,4 @@ private:
 };
 
 void glew_init();
+void clear_screen();

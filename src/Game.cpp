@@ -57,9 +57,14 @@ void Game::init()
 		bool m_opengl = true;
 		if (m_opengl)
 		{
-			//Use OpenGL 2.1
+			SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+			SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
 			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
 			SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 			flags |= SDL_WINDOW_OPENGL;
@@ -91,6 +96,7 @@ void Game::init()
 
 void Game::render()
 {
+	clear_screen();
 	if (drawable)
 		drawable->render();
 
@@ -113,7 +119,7 @@ void Game::InitGLSLProgram()
 	shaderProgram.linkProgram();
 	shaderProgram.use();
 
-	m_view = glm::lookAt(glm::vec3(3.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.0f));
+	m_view = glm::lookAt(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.0f));
 	m_model = mat4(0.01f);
 	m_projection = glm::perspective(45.f, 1.f, 0.01f, 1000.f); 
 
@@ -126,9 +132,22 @@ void Game::InitGLSLProgram()
 void Game::update()
 {
 	shaderProgram.use();
+	
+	SDL_Delay(100);
+
+	m_model *= glm::rotate(.1f, glm::vec3(0.f, 1.f, 0.2f));
+	
 	shaderProgram.setUniform(m_view, "ViewMatrix");
 	shaderProgram.setUniform(m_model, "ModelMatrix");
 	shaderProgram.setUniform(m_projection, "ProjectionMatrix");
+
+	mat4 normalMatrix = glm::transpose(glm::inverse(m_view * m_model));
+	shaderProgram.setUniform(normalMatrix, "NormalMatrix");
+	
+	vec4 LightPos = glm::vec4(-50.0, 3.0, 43.0, 1.0);
+	shaderProgram.setUniform(LightPos, "LightPos");
+	
+	
 
 	glm::mat4 MVP = m_projection * m_view *  m_model;
 
@@ -148,6 +167,8 @@ void Game::handleEvents()
 
 void Game::clean()
 {
+	shaderProgram.release();
+
 	drawable.reset();
 
 	SDL_DestroyWindow(m_pWindow);
@@ -173,4 +194,23 @@ void Game::OnExit()
 	m_bRunning = false;
 }
 
+void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod) 
+{
+	glm::mat4 moveMatrix;
+	if(sym == SDLK_w)
+	{
+		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, -0.5f));
+	}else if (sym == SDLK_s)
+	{
+		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, 0.5f));	
+	}
+	if(sym == SDLK_a)
+	{
+		moveMatrix = glm::translate(glm::vec3(0.5f, 0.f, 0.0f));
+	}else if (sym == SDLK_d)
+	{
+		moveMatrix = glm::translate(glm::vec3(-0.5f, 0.f, 0.0f));	
+	}
 
+	m_view *= moveMatrix;
+}

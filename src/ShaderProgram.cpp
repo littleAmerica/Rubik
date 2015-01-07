@@ -29,6 +29,9 @@ GLuint ShaderProgram::getShaderProgram()
 
 void ShaderProgram::linkProgram()
 {
+	if( m_programHandle <= 0)
+		return; //TODO tell something more informative
+
 	glLinkProgram(m_programHandle);
 
 	GLint status;
@@ -52,8 +55,20 @@ void ShaderProgram::linkProgram()
 
 void ShaderProgram::use()
 {
-	if( m_programHandle <= 0 || (! m_programHandle) ) return;
-		glUseProgram( m_programHandle );
+	if( m_programHandle <= 0)
+		return; //TODO tell something more informative
+	glUseProgram( m_programHandle );
+}
+
+void ShaderProgram::release()
+{
+	if( m_programHandle <= 0 || m_vertextProgram <= 0 || m_fragmentProgram <= 0)
+		return; //TODO tell something more informative
+	
+	glDeleteShader(m_vertextProgram);
+	glDeleteShader(m_fragmentProgram);
+	glDeleteProgram(m_programHandle);
+
 }
 
 
@@ -110,17 +125,6 @@ void ShaderProgram::setUniform( bool matr, const std::string& name )
 }
 
 
-void glew_init()
-{
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if( GLEW_OK != err )
-	{
-		std::cout << "Error initializing GLEW: " << glewGetErrorString(err) << "\n";
-	}
-}
-
-
 std::string ShaderProgram::readShader(const std::string& path)
 {
 	std::ifstream t(path);
@@ -157,13 +161,17 @@ bool ShaderProgram::compileShaderFromString( const std::string & source, ShaderP
 
 	switch( type ) {
 	case ShaderProgram::VERTEX:
-		shaderHandle = glCreateShader(GL_VERTEX_SHADER);
-		break;
+		{
+			shaderHandle = m_vertextProgram = glCreateShader(GL_VERTEX_SHADER);
+			break;
+		}
 	case ShaderProgram::FRAGMENT:
-		shaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
-		break;
+		{
+			shaderHandle = m_fragmentProgram = glCreateShader(GL_FRAGMENT_SHADER);
+			break;
+		}
 	default:
-		return false;
+		return false; //TODO tell something more informative
 	}
 
 	const char * c_code = source.c_str();
@@ -240,4 +248,21 @@ void ShaderProgram::printActiveAttribs()
 	}
 
 	delete[] name;
+}
+
+
+void glew_init()
+{
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if( GLEW_OK != err )
+	{
+		std::cout << "Error initializing GLEW: " << glewGetErrorString(err) << "\n";
+	}
+}
+
+void clear_screen()
+{
+	glClearColor(0.5, 0.0, 0.0, 1.0);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }

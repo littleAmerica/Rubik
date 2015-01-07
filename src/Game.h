@@ -10,8 +10,9 @@
 #include <memory>
 
 #include "glm/glm.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform2.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/transform2.hpp"
+
 using glm::vec4;
 using glm::mat4;
 
@@ -36,9 +37,11 @@ private:
 	bool running();
 
 	virtual void OnEvent(SDL_Event* event);
+	void OnKeyDown(SDL_Keycode sym, Uint16 mod);
 	virtual void OnExit();
-	void InitGLSLProgram();
 
+	void InitGLSLProgram();
+	
 	SDL_Window*		m_pWindow;
 	SDL_Renderer*	m_pRenderer;
 

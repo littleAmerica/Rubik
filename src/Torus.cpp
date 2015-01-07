@@ -68,16 +68,13 @@ Torus::Torus(float outerRadius, float innerRadius, int nsides, int nrings) :
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle[3]);
 
     glBindVertexArray(0);
-
-//	glEnable(GL_DEPTH_TEST);
 }
 
 void Torus::render()
 {
-	glClearColor(0.5, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-    glBindVertexArray(vaoHandle);
+	glEnable(GL_CULL_FACE);
+	glEnable( GL_DEPTH_TEST );
+	glBindVertexArray(vaoHandle);
     glDrawElements(GL_TRIANGLES, 6 * faces, GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
 }
 

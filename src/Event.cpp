@@ -33,10 +33,10 @@ void Event::OnEvent(SDL_Event* event) {
 	//	break;
 	//					  }
 
-	//case SDL_KEYDOWN: {
-	//	OnKeyDown(Event->key.keysym.sym,Event->key.keysym.mod,Event->key.keysym.unicode);
-	//	break;
-	//				  }
+	case SDL_KEYDOWN: {
+		OnKeyDown(event->key.keysym.sym, event->key.keysym.mod);
+		break;
+					  }
 
 	//case SDL_KEYUP: {
 	//	OnKeyUp(Event->key.keysym.sym,Event->key.keysym.mod,Event->key.keysym.unicode);
@@ -143,7 +143,7 @@ void Event::OnInputBlur() {
 	//Pure virtual, do nothing
 }
 
-void Event::OnKeyDown(SDL_Keycode sym, SDL_Keymod mod, Uint16 unicode) {
+void Event::OnKeyDown(SDL_Keycode sym, Uint16 mod) {
 	//Pure virtual, do nothing
 }
 

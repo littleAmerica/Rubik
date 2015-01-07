@@ -147,6 +147,8 @@ Cube::Cube()
 
 void Cube::render()
 {
+	glEnable(GL_CULL_FACE);
+	glEnable( GL_DEPTH_TEST );
     glBindVertexArray(vaoHandle);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
 }
