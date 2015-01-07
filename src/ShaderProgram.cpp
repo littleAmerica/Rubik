@@ -116,6 +116,7 @@ void ShaderProgram::setUniform( bool matr, const std::string& name )
 
 void glew_init()
 {
+	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if( GLEW_OK != err )
 	{
