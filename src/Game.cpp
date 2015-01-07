@@ -113,9 +113,9 @@ void Game::InitGLSLProgram()
 	shaderProgram.linkProgram();
 	shaderProgram.use();
 
-	//m_view = glm::lookAt(glm::vec3(100.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.0f));
-	//m_model = mat4(0.01f);
-	//m_projection = glm::perspective(45.f, 1.f, 0.01f, 1000.f); 
+	m_view = glm::lookAt(glm::vec3(3.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 1.0f));
+	m_model = mat4(0.01f);
+	m_projection = glm::perspective(45.f, 1.f, 0.01f, 1000.f); 
 
 
 	shaderProgram.printActiveAttribs();
@@ -130,11 +130,9 @@ void Game::update()
 	shaderProgram.setUniform(m_model, "ModelMatrix");
 	shaderProgram.setUniform(m_projection, "ProjectionMatrix");
 
-	glm::mat4 MVP = m_model * m_view * m_projection;
+	glm::mat4 MVP = m_projection * m_view *  m_model;
 
-	glm::mat4 rotate = glm::rotate(3.f, glm::vec3(1.f, 0.f, 0.f));
-
-	shaderProgram.setUniform(rotate, "MVP");
+	shaderProgram.setUniform(MVP, "MVP");
 }
 
 
