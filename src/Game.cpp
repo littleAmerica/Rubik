@@ -133,9 +133,9 @@ void Game::update()
 {
 	shaderProgram.use();
 	
-	SDL_Delay(100);
+	//SDL_Delay(100);
 
-	m_model *= glm::rotate(.1f, glm::vec3(0.f, 1.f, 0.2f));
+	m_model *= glm::rotate(.02f, glm::vec3(0.f, 1.f, 0.0f));
 	
 	shaderProgram.setUniform(m_view, "ViewMatrix");
 	shaderProgram.setUniform(m_model, "ModelMatrix");
@@ -199,10 +199,10 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 	glm::mat4 moveMatrix;
 	if(sym == SDLK_w)
 	{
-		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, -0.5f));
+		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, 0.5f));
 	}else if (sym == SDLK_s)
 	{
-		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, 0.5f));	
+		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, -0.5f));	
 	}
 	if(sym == SDLK_a)
 	{
@@ -218,4 +218,5 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
 	std::cout << relX << " " << relY << "\n";
+
 }
