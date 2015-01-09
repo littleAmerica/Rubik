@@ -6,7 +6,8 @@
 
 #include "Event.h"
 #include "ShaderProgram.h"
-#include "drawable.h"
+#include "Drawable.h"
+#include "Camera.h"
 #include <memory>
 
 #include "glm/glm.hpp"
@@ -63,11 +64,9 @@ private:
 	int				m_height;
 	bool			m_fullscreen;
 
-	std::shared_ptr<Drawable> drawable;
+	std::shared_ptr<Drawable> m_drawable;
+	std::shared_ptr<Camera> m_camera;
 
 	mat4 m_model;
-	mat4 m_view;
-	mat4 m_projection;
-
 };
 

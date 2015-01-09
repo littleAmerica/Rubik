@@ -15,7 +15,7 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& facedTo, const glm::v
 
 void Camera::rotate(float horizontalAngle, float verticalAngle)
 {
-	glm::vec3 direction = m_cameraFacedTo - m_cameraPosition;
+	glm::vec3 direction = FaceToDirection();
 	glm::vec3 newDirection = glm::rotateY(direction, -horizontalAngle);
 	//change the faced to point accordingly to new direction
 	m_cameraFacedTo = newDirection - m_cameraPosition;
@@ -27,8 +27,7 @@ void Camera::rotate(float horizontalAngle, float verticalAngle)
 void Camera::move(float forward, float right)
 {
 
-	Direction();
-
+	glm::vec3 direction = FaceToDirection();
 
 	//we don't want to go up
 	glm::vec3 faceTo_XZ(direction.x, 0, direction.z);
@@ -36,7 +35,7 @@ void Camera::move(float forward, float right)
 
 	m_cameraPosition += stepForward;
 
-	direction = m_cameraFacedTo - m_cameraPosition;
+	direction = FaceToDirection();
 
 	glm::vec3 rightVector = glm::cross(direction, m_cameraUp);
 	glm::vec3 right_XZ(rightVector.x, 0, rightVector.z);

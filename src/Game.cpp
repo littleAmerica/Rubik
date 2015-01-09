@@ -90,6 +90,8 @@ void Game::init()
 
 		glew_init();
 		InitGLSLProgram();
+		
+		m_camera.reset(new Camera(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.0f)));
 	}
 }
 
@@ -97,8 +99,8 @@ void Game::init()
 void Game::render()
 {
 	clear_screen();
-	if (drawable)
-		drawable->render();
+	if (m_drawable)
+		m_drawable->render();
 
 	SDL_GL_SwapWindow(m_pWindow);
 }
@@ -114,14 +116,12 @@ void Game::InitGLSLProgram()
 	shaderProgram.use();
 
 	//drawable.reset(new Cube());
-	drawable.reset(new Torus(0.7f, 0.3f, 30, 30));
+	m_drawable.reset(new Torus(0.7f, 0.3f, 30, 30));
 
 	shaderProgram.linkProgram();
 	shaderProgram.use();
 
-	m_view = glm::lookAt(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.0f));
-	m_model = mat4(0.01f);
-	m_projection = glm::perspective(45.f, 1.f, 0.01f, 1000.f); 
+
 
 
 	shaderProgram.printActiveAttribs();
@@ -132,25 +132,18 @@ void Game::InitGLSLProgram()
 void Game::update()
 {
 	shaderProgram.use();
-	
+	vec4 LightPos = glm::vec4(-50.0, 3.0, 43.0, 1.0);
+	shaderProgram.setUniform(LightPos, "LightPos");	
 	//SDL_Delay(100);
 
 	m_model *= glm::rotate(.02f, glm::vec3(0.f, 1.f, 0.0f));
-	
-	shaderProgram.setUniform(m_view, "ViewMatrix");
+	mat4 normalMatrix = glm::transpose(glm::inverse(m_camera->View() * m_model));
+	glm::mat4 MVP = m_camera->Projection() * m_camera->View() *  m_model;
+
+	shaderProgram.setUniform(m_camera->View(), "ViewMatrix");
 	shaderProgram.setUniform(m_model, "ModelMatrix");
-	shaderProgram.setUniform(m_projection, "ProjectionMatrix");
-
-	mat4 normalMatrix = glm::transpose(glm::inverse(m_view * m_model));
+	shaderProgram.setUniform(m_camera->Projection(), "ProjectionMatrix");
 	shaderProgram.setUniform(normalMatrix, "NormalMatrix");
-	
-	vec4 LightPos = glm::vec4(-50.0, 3.0, 43.0, 1.0);
-	shaderProgram.setUniform(LightPos, "LightPos");
-	
-	
-
-	glm::mat4 MVP = m_projection * m_view *  m_model;
-
 	shaderProgram.setUniform(MVP, "MVP");
 }
 
@@ -169,7 +162,7 @@ void Game::clean()
 {
 	shaderProgram.release();
 
-	drawable.reset();
+	m_drawable.reset();
 
 	SDL_DestroyWindow(m_pWindow);
 	SDL_DestroyRenderer(m_pRenderer);
@@ -199,24 +192,28 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 	glm::mat4 moveMatrix;
 	if(sym == SDLK_w)
 	{
-		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, 0.5f));
+		m_camera->move(1.f, 0.f);
 	}else if (sym == SDLK_s)
 	{
-		moveMatrix = glm::translate(glm::vec3(0.f, 0.f, -0.5f));	
+		m_camera->move(-1.f, 0.f);
 	}
 	if(sym == SDLK_a)
 	{
-		moveMatrix = glm::translate(glm::vec3(0.5f, 0.f, 0.0f));
+		m_camera->move(0.f, -0.5f);
 	}else if (sym == SDLK_d)
 	{
-		moveMatrix = glm::translate(glm::vec3(-0.5f, 0.f, 0.0f));	
+		m_camera->move(0.f, 0.5f);	
+	}else if (sym == SDLK_q)
+	{
+		m_camera->rotate(glm::radians(-15.f), 0);
+	}else if (sym == SDLK_e)
+	{
+		m_camera->rotate(glm::radians(15.f), 0);	
 	}
-
-	m_view *= moveMatrix;
 }
+
 
 void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
-	std::cout << relX << " " << relY << "\n";
-
+	//m_camera->rotate(glm::radians(30.f), (float)relY);
 }
