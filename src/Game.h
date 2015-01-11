@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <list>
 
 #include "SDL.h"
 
@@ -66,6 +67,9 @@ private:
 
 	std::shared_ptr<Drawable> m_drawable;
 	std::shared_ptr<Camera> m_camera;
+
+	typedef std::list<std::shared_ptr<Interpolation>> Interpolations;
+	Interpolations m_interpolations;
 
 	mat4 m_model;
 };

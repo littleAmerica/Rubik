@@ -128,6 +128,20 @@ void Game::InitGLSLProgram()
 
 void Game::update()
 {
+	//TODO refactored this 
+	int currentTime = SDL_GetTicks(); 
+	Interpolations::iterator iter = m_interpolations.begin();
+	while( iter != m_interpolations.end())
+	{
+		if ((*iter)->isValid(currentTime))
+		{
+			(*iter)->interpolate(currentTime);
+			iter++;
+		}
+		else
+			m_interpolations.erase(iter++);		
+	}
+
 	shaderProgram.use();
 	vec4 LightPos = glm::vec4(-50.0, 3.0, 43.0, 1.0);
 	shaderProgram.setUniform(LightPos, "LightPos");	
@@ -186,33 +200,33 @@ void Game::OnExit()
 
 void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod) 
 {
-	glm::mat4 moveMatrix;
+	//TODO refactored this 
 	if(sym == SDLK_w)
 	{
-		m_camera->move(1.f, 0.f);
+		m_interpolations.push_back(m_camera->getMoveInterpolation(0.f, 0.f, 1.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}else if (sym == SDLK_s)
 	{
-		m_camera->move(-1.f, 0.f);
+		m_interpolations.push_back(m_camera->getMoveInterpolation(0.f, 0.f, -1.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}
 	if(sym == SDLK_a)
 	{
-		m_camera->move(0.f, -0.5f);
+		m_interpolations.push_back(m_camera->getMoveInterpolation(-1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}else if (sym == SDLK_d)
 	{
-		m_camera->move(0.f, 0.5f);	
+		m_interpolations.push_back(m_camera->getMoveInterpolation(1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}
 	else if (sym == SDLK_q)
 	{
-		m_camera->rotate(glm::radians(-10.f), 0);
+		m_interpolations.push_back(m_camera->getRotateInterpolation(1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}else if (sym == SDLK_e)
 	{
-		m_camera->rotate(glm::radians(10.f), 0);	
+		m_interpolations.push_back(m_camera->getRotateInterpolation(-1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}else if (sym == SDLK_z)
 	{
-		m_camera->rotate(0.0, glm::radians(-10.f));
+		m_interpolations.push_back(m_camera->getRotateInterpolation(0.f, 1.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}else if (sym == SDLK_x)
 	{
-		m_camera->rotate(0.0, glm::radians(10.f));	
+		m_interpolations.push_back(m_camera->getRotateInterpolation(0.f, -1.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}
 }
 

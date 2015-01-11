@@ -4,7 +4,6 @@
 class Drawable
 {
 public:
-	Drawable() {};
 
     virtual void render() = 0;
 
