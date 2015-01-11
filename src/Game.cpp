@@ -121,9 +121,6 @@ void Game::InitGLSLProgram()
 	shaderProgram.linkProgram();
 	shaderProgram.use();
 
-
-
-
 	shaderProgram.printActiveAttribs();
 	shaderProgram.printActiveUniforms();
 }
@@ -203,17 +200,24 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 	}else if (sym == SDLK_d)
 	{
 		m_camera->move(0.f, 0.5f);	
-	}else if (sym == SDLK_q)
+	}
+	else if (sym == SDLK_q)
 	{
-		m_camera->rotate(glm::radians(-15.f), 0);
+		m_camera->rotate(glm::radians(-10.f), 0);
 	}else if (sym == SDLK_e)
 	{
-		m_camera->rotate(glm::radians(15.f), 0);	
+		m_camera->rotate(glm::radians(10.f), 0);	
+	}else if (sym == SDLK_z)
+	{
+		m_camera->rotate(0.0, glm::radians(-10.f));
+	}else if (sym == SDLK_x)
+	{
+		m_camera->rotate(0.0, glm::radians(10.f));	
 	}
 }
 
 
 void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
-	//m_camera->rotate(glm::radians(30.f), (float)relY);
+
 }

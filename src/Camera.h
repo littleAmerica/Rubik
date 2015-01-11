@@ -3,7 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform2.hpp"
-
+#include <glm/gtc/quaternion.hpp>
 
 class Camera
 {
@@ -12,26 +12,25 @@ public:
 
 	glm::mat4 View();
 	glm::mat4 Projection();
-	
-	glm::vec3 FaceToDirection();
-	glm::vec3 FaceToPoint();
 	glm::vec3 Position();
-
+	glm::mat4 NormalMatrix();
+	glm::vec3 FaceToDirection();
 
 	void rotate(float horizontalAngle, float verticalAngle);
+	void pitch(float angle);
+	void yaw(float angle);
+	void move(float x, float y, float z);
 	void move(float forward, float right);
-
-	
-
-
 
 private:
 	void updateMatrix();
-	
+	glm::vec3 Right();	
+
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
 
-	glm::vec3 m_cameraPosition;
-	glm::vec3 m_cameraFacedTo;
+	glm::vec3 m_position;
+
+	glm::vec3 m_direction;
 	glm::vec3 m_cameraUp;
 };
