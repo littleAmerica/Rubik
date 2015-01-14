@@ -82,7 +82,9 @@ void Camera::move(vec3 moveOn)
 	if (moveOn == vec3(0.f))
 		return;
 
-	m_position += moveOn;
+	vec3 movingDirection = glm::normalize(moveOn * m_direction); 
+
+	m_position += glm::abs(moveOn) * movingDirection;
 
 	updateMatrix();
 }

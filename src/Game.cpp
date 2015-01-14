@@ -87,6 +87,8 @@ void Game::init()
 				m_bRunning = true;
 			}
 		}
+		SDL_WarpMouseInWindow(m_pWindow, m_width / 2, m_height / 2);
+//		SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		glew_init();
 		InitGLSLProgram();
@@ -215,23 +217,41 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 	{
 		m_interpolations.push_back(m_camera->getMoveInterpolation(1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
 	}
-	else if (sym == SDLK_q)
+
+
+	if (sym == SDLK_ESCAPE)
 	{
-		m_interpolations.push_back(m_camera->getRotateInterpolation(1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
-	}else if (sym == SDLK_e)
+		m_bRunning = false;
+	}
+
+	if (sym == SDLK_F1)
 	{
-		m_interpolations.push_back(m_camera->getRotateInterpolation(-1.f, 0.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
-	}else if (sym == SDLK_z)
-	{
-		m_interpolations.push_back(m_camera->getRotateInterpolation(0.f, 1.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
-	}else if (sym == SDLK_x)
-	{
-		m_interpolations.push_back(m_camera->getRotateInterpolation(0.f, -1.f, 0.f, SDL_GetTicks(), SDL_GetTicks() + 1000));
+		m_camera.reset(new Camera(glm::vec3(0.f, 0.f, 3.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.0f)));
 	}
 }
 
 
 void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
+#ifdef _DEBUG
+	static bool debug_skipp_mouse = false;
+	if(debug_skipp_mouse)
+		return;
+#endif
+	
+	static bool skipped = true; 
 
+	if (!skipped)
+	{
+		std::cout << relX << " " << relY << "\n";
+		m_camera->rotate(glm::radians((float)relX / 10.f), glm::radians((float)relY / 10.f));
+
+
+		SDL_WarpMouseInWindow(m_pWindow, m_width / 2, m_height / 2);
+		skipped = true;
+	}
+	else
+	{
+		skipped = false;
+	}
 }
