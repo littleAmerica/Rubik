@@ -93,7 +93,7 @@ void ShaderProgram::setUniform( const glm::vec2& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 {
-	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location = glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform3f(location, vec[0], vec[1], vec[2]);
@@ -102,16 +102,20 @@ void ShaderProgram::setUniform( const glm::vec3& vec, const std::string& name )
 
 void ShaderProgram::setUniform( const glm::vec4& vec, const std::string& name )
 {
-	GLint location =glGetUniformLocation(m_programHandle, name.c_str());
+	GLint location = glGetUniformLocation(m_programHandle, name.c_str());
 	if( location >= 0 )
 	{
 		glUniform4f(location, vec[0], vec[1], vec[2], vec[3]);
 	}
 }
 
-void ShaderProgram::setUniform( float matr, const std::string& name )
+void ShaderProgram::setUniform( float value, const std::string& name )
 {
-	throw std::exception("Not implemented");
+	GLint location = glGetUniformLocation(m_programHandle, name.c_str());
+	if( location >= 0 )
+	{
+		glUniform1f(location, value);
+	}
 }
 
 void ShaderProgram::setUniform( int matr, const std::string& name )

@@ -125,6 +125,18 @@ void Game::InitGLSLProgram()
 
 	shaderProgram.printActiveAttribs();
 	shaderProgram.printActiveUniforms();
+
+	//ADS
+	shaderProgram.setUniform(100.0f, "Material.Shininess");
+	shaderProgram.setUniform(glm::vec3(0.9f, 0.5f, 0.3f), "material.Kd");
+	shaderProgram.setUniform(glm::vec3(0.9f, 0.5f, 0.3f), "material.Ka");
+	shaderProgram.setUniform(glm::vec3(0.8f, 0.8f, 0.8f), "material.Ks");
+	shaderProgram.setUniform(glm::vec3(1.0f, 1.0f, 1.0f), "light.Ld");
+	shaderProgram.setUniform(glm::vec3(0.4f, 0.4f, 0.4f), "light.La");
+	shaderProgram.setUniform(glm::vec3(1.0f, 1.0f, 1.0f), "light.Ls");
+	glm::vec3 LightPos = glm::vec3(-50.0, 3.0, 43.0);	   
+	shaderProgram.setUniform(LightPos, "Light.Position");	
+	
 }
 
 
@@ -145,8 +157,8 @@ void Game::update()
 	}
 
 	shaderProgram.use();
-	vec4 LightPos = glm::vec4(-50.0, 3.0, 43.0, 1.0);
-	shaderProgram.setUniform(LightPos, "LightPos");	
+
+
 	//SDL_Delay(100);
 
 	m_model *= glm::rotate(.02f, glm::vec3(0.f, 1.f, 0.0f));
@@ -234,7 +246,7 @@ void Game::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 void Game::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
 #ifdef _DEBUG
-	static bool debug_skipp_mouse = false;
+	static bool debug_skipp_mouse = true;
 	if(debug_skipp_mouse)
 		return;
 #endif
