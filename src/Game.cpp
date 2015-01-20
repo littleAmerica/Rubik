@@ -127,14 +127,14 @@ void Game::InitGLSLProgram()
 	shaderProgram.printActiveUniforms();
 
 	//ADS
-	shaderProgram.setUniform(100.0f, "Material.Shininess");
+	shaderProgram.setUniform(100.0f, "material.Shininess");
 	shaderProgram.setUniform(glm::vec3(0.9f, 0.5f, 0.3f), "material.Kd");
 	shaderProgram.setUniform(glm::vec3(0.9f, 0.5f, 0.3f), "material.Ka");
 	shaderProgram.setUniform(glm::vec3(0.8f, 0.8f, 0.8f), "material.Ks");
 	shaderProgram.setUniform(glm::vec3(1.0f, 1.0f, 1.0f), "light.Ld");
 	shaderProgram.setUniform(glm::vec3(0.4f, 0.4f, 0.4f), "light.La");
 	shaderProgram.setUniform(glm::vec3(1.0f, 1.0f, 1.0f), "light.Ls");
-	glm::vec3 LightPos = glm::vec3(-50.0, 3.0, 43.0);	   
+	glm::vec3 LightPos = glm::vec3(0.f, 3.f, -40.f);	   
 	shaderProgram.setUniform(LightPos, "Light.Position");	
 	
 }
@@ -170,6 +170,7 @@ void Game::update()
 	shaderProgram.setUniform(m_camera->Projection(), "ProjectionMatrix");
 	shaderProgram.setUniform(normalMatrix, "NormalMatrix");
 	shaderProgram.setUniform(MVP, "MVP");
+	shaderProgram.setUniform(m_camera->View() * m_model, "ModelViewMatrix");
 }
 
 
