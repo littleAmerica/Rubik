@@ -38,6 +38,8 @@ void Game::run()
 		update();
 		
 		render();
+
+		SDL_Delay(10);
 	}
 
 	clean();
